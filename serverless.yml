@@ -1,0 +1,34 @@
+service: ats-microservice
+
+provider:
+  name: aws
+  runtime: python3.9
+
+plugins:
+  - serverless-offline
+
+functions:
+
+  getJobs:
+    handler: handler.jobs
+    events:
+      - http:
+          path: jobs
+          method: get
+          cors: true
+
+  createCandidate:
+    handler: handler.candidates
+    events:
+      - http:
+          path: candidates
+          method: post
+          cors: true
+
+  getApplications:
+    handler: handler.applications
+    events:
+      - http:
+          path: applications
+          method: get
+          cors: true
