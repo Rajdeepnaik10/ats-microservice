@@ -1,34 +1,35 @@
 service: ats-microservice
 
+frameworkVersion: '3'
+
 provider:
   name: aws
-  runtime: python3.9
+  runtime: python3.11
+  region: ap-south-1
+  environment:
+    ZOHO_ACCESS_TOKEN: "1000.2008e6bd469a3dad964c7ac3f5432c22.b7857c22dfb89bfc264ccad1588bf5a0"
 
 plugins:
   - serverless-offline
 
 functions:
-
   getJobs:
-    handler: handler.jobs
+    handler: handler.get_jobs_handler
     events:
       - http:
           path: jobs
           method: get
-          cors: true
+
+  getCandidates:
+    handler: handler.get_candidates_handler
+    events:
+      - http:
+          path: candidates
+          method: get
 
   createCandidate:
-    handler: handler.candidates
+    handler: handler.create_candidate_handler
     events:
       - http:
           path: candidates
           method: post
-          cors: true
-
-  getApplications:
-    handler: handler.applications
-    events:
-      - http:
-          path: applications
-          method: get
-          cors: true

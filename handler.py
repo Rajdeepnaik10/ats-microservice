@@ -1,75 +1,85 @@
 import json
-from mock_recruitee import get_jobs, create_candidate, get_applications
+from zoho_api import get_jobs, get_candidates, create_candidate
 
 
-def jobs(event, context):
-    """
-    GET /jobs
-    Returns list of jobs
-    """
-
-    data = get_jobs()
-
-    return {
-        "statusCode": 200,
-        "body": json.dumps(data)
-    }
-
-
-def candidates(event, context):
-    """
-    POST /candidates
-    Creates a candidate application
-    """
-
+# GET /dev/jobs
+def get_jobs_handler(event, context):
     try:
-        body = json.loads(event.get("body", "{}"))
-
-        result = create_candidate(body)
+        jobs = get_jobs()
 
         return {
             "statusCode": 200,
-            "body": json.dumps(result)
-        }
-
-    except Exception as e:
-        return {
-            "statusCode": 400,
             "body": json.dumps({
-                "error": str(e)
+                "success": True,
+                "data": jobs
             })
-        }
-
-
-def applications(event, context):
-    """
-    GET /applications?job_id=
-    Returns applications for a job
-    """
-
-    params = event.get("queryStringParameters") or {}
-    job_id = params.get("job_id")
-
-    if not job_id:
-        return {
-            "statusCode": 400,
-            "body": json.dumps({
-                "error": "job_id query parameter required"
-            })
-        }
-
-    try:
-        result = get_applications(job_id)
-
-        return {
-            "statusCode": 200,
-            "body": json.dumps(result)
         }
 
     except Exception as e:
         return {
             "statusCode": 500,
             "body": json.dumps({
+                "success": False,
+                "error": str(e)
+            })
+        }
+
+
+# GET /dev/candidates
+def get_candidates_handler(event, context):
+    try:
+        candidates = get_candidates()
+
+        return {
+            "statusCode": 200,
+            "body": json.dumps({
+                "success": True,
+                "data": candidates
+            })
+        }
+
+    except Exception as e:
+        return {
+            "statusCode": 500,
+            "body": json.dumps({
+                "success": False,
+                "error": str(e)
+            })
+        }
+
+
+# POST /dev/candidates
+def create_candidate_handler(event, context):
+    try:
+        body = json.loads(event.get("body", "{}"))
+
+        name = body.get("name")
+        email = body.get("email")
+
+        if not name or not email:
+            return {
+                "statusCode": 400,
+                "body": json.dumps({
+                    "success": False,
+                    "error": "Name and Email are required"
+                })
+            }
+
+        result = create_candidate(name, email)
+
+        return {
+            "statusCode": 200,
+            "body": json.dumps({
+                "success": True,
+                "data": result
+            })
+        }
+
+    except Exception as e:
+        return {
+            "statusCode": 500,
+            "body": json.dumps({
+                "success": False,
                 "error": str(e)
             })
         }
