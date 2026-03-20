@@ -4,36 +4,27 @@
 
 This project is a serverless microservice that integrates with Zoho Recruit API to fetch job openings and candidate data.
 
-## 🛠 Tech Stack
+## Tech Stack
+- Python
+- Serverless Framework
+- Zoho Recruit API
 
-* Python
-* Serverless Framework
-* Zoho Recruit API
-* AWS Lambda (offline)
+## Features
+- Fetch Jobs from Zoho Recruit
+- Fetch Candidates
+- OAuth Token Handling
+- Serverless Architecture
 
-## ⚙️ Features
+## API Endpoints
+- GET /jobs
+- GET /candidates
 
-* Fetch job openings from Zoho
-* Fetch candidate details
-* OAuth 2.0 integration
-* Error handling (empty data, invalid token)
-* Modular architecture (handler + service layer)
-
-## 📡 API Endpoints
-
-### Get Jobs
-
-GET /dev/jobs
-
-### Get Candidates
-
-GET /dev/candidates
 
 ## 🧠 Architecture
 
 * `handler.py` → Lambda handlers
 * `zoho_api.py` → External API service layer
-* `mock_recruitee.py` → Initial mock API (for development)
+
 
 ## 🔐 Environment Variables
 
@@ -54,6 +45,9 @@ serverless offline
 * Auto refresh token
 * Deployment on AWS
 * Add POST endpoints (create candidate)
+
+* ## Notes
+- Uses Zoho OAuth access token
 
 ## 👨‍💻 Author
 
